@@ -1,5 +1,3 @@
-package pj02;
-
 /**
  * Policies.java
  *

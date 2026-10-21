@@ -1,4 +1,10 @@
-package pj02;
+/**
+ * Shelf.java
+ * This is a shelf where we have pallets
+ * @author Akshat Tewari
+ * @version 10/20/26
+ */
+
 
 public class Shelf {
     private Pallet[] pallets;
@@ -25,6 +31,10 @@ public class Shelf {
 
         return total;
     }
+    public double getWeightLeft() {
+        return this.getWeightLimit() - this.getCurrentWeight();
+    }
+
     public boolean hasOpenPositions() {
         for (var pallet : pallets) {
             if (pallet == null) {
@@ -40,27 +50,25 @@ public class Shelf {
     }
 
     public boolean addPallet(Pallet pallet) {
-        if (pallet.getItem() == null || pallet == null) {
+        if (pallet == null || pallet.getItem() == null) {
             return false;
         } else if (pallet.getCount() == 0 || !this.hasOpenPositions()) {
             return false;
         } else if (this.weightLimit - this.getCurrentWeight() < pallet.getWeight()) {
             return false;
         } else {
-
             for (int i = 0; i < this.pallets.length; i++) {
                 if (this.pallets[i] == null) {
                     this.pallets[i] = pallet;
                     break;
                 }
             }
-
             return true;
         }
 
     }
 
-    public int findItem (Item item) {
+    public int findItem(Item item) {
         for (int i = 0; i < this.pallets.length; i++) {
             if (this.pallets[i] != null) {
                 if (this.pallets[i].getItem().getName().equals(item.getName())) {
@@ -88,7 +96,7 @@ public class Shelf {
         for (int i = 0; i < this.pallets.length; i++) {
             if (this.pallets[i] == null 
                 || this.pallets[i].getItem() == null || this.pallets[i].getCount() == 0) {
-                    this.pallets[i] = null;
+                this.pallets[i] = null;
             }
         }
     }

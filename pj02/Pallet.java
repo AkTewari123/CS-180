@@ -1,11 +1,17 @@
-package pj02;
 
+/**
+ * Pallet.java
+ * This is Pallet which has items in our warehouse.
+ * @author Akshat Tewari
+ * @version 10/20/26
+ */
 public class Pallet {
 
     private Item item;
     private int count;
     public Pallet(Item item, int count) {
-        if (Policies.getPalletCapacity(item.getSize()) >= count) {
+        
+        if (item != null && Policies.getPalletCapacity(item.getSize()) >= count) {
             this.item = item;
             this.count = count;
         } else {
@@ -29,6 +35,9 @@ public class Pallet {
     }
 
     public int getCapacity() {
+        if (item == null) {
+            return -1;
+        }
         return Policies.getPalletCapacity(item.getSize());
     }
 
@@ -37,37 +46,66 @@ public class Pallet {
     }
 
     public boolean isEmpty() {
-        return item == null || this.getRemainingCapacity() == this.getCapacity();
+        return this.item == null || this.getRemainingCapacity() == this.getCapacity();
     }
 
     public double getWeight() {
+        if (item == null) {
+            return 0;
+        }
         return item.getWeight() * count;
     }
 
-    public int addItem(Item item, int quantity) {
-        if (this.item.getName().equals(item.getName())) {
+    public int addItems(Item item, int quantity) {
+        if (quantity <= 0 ) {
+            return quantity;
+        }
+        if (this.item != null && item != null && !this.item.equals(item)) {
+            return quantity;
+        }
+        if (item != null) {
+            if (this.item == null) {
+                this.item = item;
+            }
             int tmp = count;
             count = Math.min(this.getCapacity(), count + quantity);
-
-            return Math.max(tmp + quantity - this.getCapacity() , 0);
+            count = Math.max(count, 0); 
+            if (quantity > 0)  {
+                return Math.max(tmp + quantity - this.getCapacity(), 0);
+            } else {
+                return Math.min(quantity + (tmp - count), 0);
+            }
         } 
-
+        // IO.println("here");
         return quantity;
     }
 
     public int removeItems(Item item, int quantity) {
-        if (this.item.getName().equals(item.getName())) {
+        
+        if (item != null && this.item != null && this.item.getName().equals(item.getName())) {
             int tmp = count;
             count = Math.max(0, count - quantity);
-
-            return Math.max(quantity, tmp - quantity);
+            if (count == 0) {
+                this.item = null;
+            }
+            if (quantity > tmp) {
+                return tmp;
+            } else {
+                return quantity;
+            }
         }
         return 0;
     }
 
     @Override 
     public String toString() {
-        return item.toString() + " x " + count;
+        String itemString;
+        if (item == null) {
+            itemString = "null";
+        } else {
+            itemString = item.toString();
+        }
+        return itemString + " x " + count;
     }
 
 }

@@ -1,4 +1,9 @@
-package pj02;
+/**
+ * Item.java
+ * This is an item in our warehouse.
+ * @author Akshat Tewari
+ * @version 10/20/26
+ */
 
 public class Item {
     String name;
@@ -45,13 +50,18 @@ public class Item {
 
     @Override
     public String toString() {
-        return String.format("%s (%d) - %.2f lbs - Size %c", name, itemNumber, weight, size);
+        return String.format("%s (#%d) - %.2f lbs - Size %c", name, itemNumber, weight, size);
     }
 
     @Override
     public boolean equals(Object o) {
         if (o instanceof Item otherItem) {
-            return otherItem.toString().equals(this.toString());
+            boolean equals = otherItem.getName().equals(name);
+            equals = otherItem.getSize() == size && equals;
+            equals = Math.abs(otherItem.getWeight() - weight) <= Policies.getDelta() && equals;
+            equals = otherItem.getItemNumber() == itemNumber  && equals;
+
+            return equals;
         }
 
         return false;
