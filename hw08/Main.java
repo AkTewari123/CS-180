@@ -1,4 +1,3 @@
-package hw08;
 import java.io.*;
 
 /**

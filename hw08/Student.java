@@ -1,4 +1,3 @@
-package hw08;
 import java.io.Serializable;
 
 public class Student implements Serializable {
@@ -10,5 +9,10 @@ public class Student implements Serializable {
         this.name = name;
         this.age = age;
         this.program = program;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("Name: %s, age: %d, program: %s", name, age, program);
     }
 }
